@@ -1,0 +1,49 @@
+<ion-header >
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <div class="nav-bar"><ion-icon name="menu"></ion-icon></div>
+    </button>
+    <ion-title><div class="nav-bar">Medicine cabinet</div></ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+ <ion-card  *ngFor="let med of meds" class="med-card" (click)="openMenu(med)">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-4>
+              <img [src]="med.shape" class="pill-icon"/>
+            </ion-col>
+            <ion-col col-8>
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-12><h1>{{med.name}}</h1></ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col col-4>{{med.daysDone}}/{{med.noDays}}</ion-col>
+                  <ion-col col-8><progress-bar [progress]="( med.daysDone/ med.noDays) *100"></progress-bar></ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col col-4><ion-icon name="contacts"></ion-icon></ion-col>
+                  <ion-col col-4><ion-icon name="ribbon"></ion-icon></ion-col>
+                  <ion-col col-4> <ion-icon name="settings"></ion-icon></ion-col>
+                </ion-row>
+            </ion-grid>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+        <!-- <div id="detail">
+          <ion-col col-6><ion-icon name="clipboard"></ion-icon> Detail</ion-col>
+        </div>
+        <div id="delete">
+          <ion-col col-6><ion-icon name="trash"></ion-icon> Delete</ion-col>
+        </div> -->
+  </ion-card> 
+
+ <ion-fab right bottom>
+  <button ion-fab icon-only (click)="addMed()" id="med-add">
+    <ion-icon name="add"></ion-icon>
+  </button>
+</ion-fab>
+</ion-content>

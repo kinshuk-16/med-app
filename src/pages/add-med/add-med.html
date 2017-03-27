@@ -1,0 +1,103 @@
+<!--
+  Generated template for the AddMed page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header >
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <div class="nav-bar"><ion-icon name="menu"></ion-icon></div>
+    </button>
+    <ion-title><div class="nav-bar">Add Medication</div></ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+<ion-list>
+
+  <ion-item>
+    <ion-label>Name</ion-label>
+    <ion-input type="text" [(ngModel)]="medInfo.name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Times per day</ion-label>
+    <ion-select [(ngModel)]="medInfo.times" (ionChange)="timeSelected()">
+      <ion-option value="one">One</ion-option>
+      <ion-option value="two">Two</ion-option>
+      <ion-option value="three">Three</ion-option>
+      <ion-option value="custom">Custom</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item *ngFor="let n of medInfo.medtime">
+	      <ion-label>Set Time</ion-label>
+	      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="n.time"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Days of week</ion-label>
+    <ion-select [(ngModel)]="medInfo.days" multiple="true"> 
+      <ion-option value="mon">Monday</ion-option>
+      <ion-option value="tues">Tuesday</ion-option>
+      <ion-option value="wed" >Wednesday</ion-option>
+      <ion-option value="thurs" >Thursday</ion-option>
+      <ion-option value="fri">Friday</ion-option>
+      <ion-option value="sat" >saturday</ion-option>
+      <ion-option value="sun" >Sunday</ion-option>
+    </ion-select>
+  </ion-item>
+
+
+    <ion-item>
+      <ion-label>No of Days</ion-label>
+      <ion-input type="text" [(ngModel)]="medInfo.noDays"></ion-input>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row radio-group [(ngModel)]="medInfo.shape">
+        <ion-col col-4>
+          <ion-item>
+            <ion-radio checked="true" value="assets/img/capsule.png" ></ion-radio>
+          </ion-item>
+        </ion-col>
+        <ion-col col-4>
+          <ion-item>
+            <ion-radio value="assets/img/pill_round.png"></ion-radio>
+          </ion-item>
+        </ion-col>
+        <ion-col col-4>
+          <ion-item>
+            <ion-radio value="assets/img/drop.png" ></ion-radio>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-4>
+          <img src="assets/img/capsule.png">
+        </ion-col>
+        <ion-col col-4>
+          <img src="assets/img/pill_round.png">
+        </ion-col>
+        <ion-col col-4>
+          <img src="assets/img/drop.png">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+<!-- <ion-item>
+    <ion-label>Reminder Sound</ion-label>
+    <ion-select [(ngModel)]="medInfo.sound"> 
+      <ion-option value="seashore">Seashore</ion-option>
+      <ion-option value="water" >Water</ion-option>
+      <ion-option value="bird" >Bird</ion-option>
+    </ion-select>
+  </ion-item>
+   -->
+
+</ion-list>
+<button ion-button full (click)="doneAdding()">{{addText}}</button>
+</ion-content>

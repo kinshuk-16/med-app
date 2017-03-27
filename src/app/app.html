@@ -1,0 +1,32 @@
+<ion-menu [content]="content">
+  <ion-header>
+    <!-- <ion-toolbar>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar> -->
+  </ion-header>
+
+  <ion-content class="menu-color">
+    <ion-list class="menu-color">
+      <div id="today">
+        <!-- <ion-icon name="calendar" id="today-icon" (click)="openPage(today)"></ion-icon> -->
+        <img src="assets/img/medIcon.png">
+      </div>
+    <button menuClose ion-item (click)="openPage(today)" class="menu-color">
+        {{today.title}}
+      </button>
+      <button menuClose ion-item *ngFor="let p of pagesTop" (click)="openPage(p)" class="menu-color">
+        {{p.title}}
+      </button>
+    </ion-list>
+
+    <ion-list id="pagesBottom" no-lines class="menu-color">
+      <button menuClose ion-item *ngFor="let p of pagesBottom" (click)="openPage(p)" class="menu-color">
+        {{p.title}}
+      </button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

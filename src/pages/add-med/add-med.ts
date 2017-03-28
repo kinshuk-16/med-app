@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams} from 'ionic-angular';
 import { Page2 } from '../page2/page2';
-
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 /*
   Generated class for the AddMed page.
 
@@ -13,13 +13,19 @@ import { Page2 } from '../page2/page2';
   templateUrl: 'add-med.html'
 })
 export class AddMedPage {
-	nextId: number;
 	medInfo: any = {};
   addText: String;
   editFlag: boolean;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    if(navParams.get("nextId")){
-        this.medInfo ={
+  meds: FirebaseListObservable<any>;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public af: AngularFire) {
+    if(navParams.get("medicine")){ // editing
+       this.medInfo = navParams.get("medicine");
+      this.addText = "Done Editing";
+      this.editFlag = true;
+    }
+    else{ // adding
+      var d = new Date();
+      this.medInfo ={
         name: "",
         times: "one",
         medtime: [{time: "07:00"}],
@@ -27,16 +33,13 @@ export class AddMedPage {
         sound: "seashore",
         noDays: undefined,
         shape:"assets/img/capsule.png",
-        daysDone: 0
+        daysDone: 0,
+        id: d.toString()
       }
-      this.nextId = navParams.get("nextId");
+      
+      //this.nextId = navParams.get("nextId");
       this.addText = "Add to my Cabinet";
       this.editFlag = false;
-    }
-    else{
-      this.medInfo = navParams.get("medicine");
-      this.addText = "Done Editing";
-      this.editFlag = true;
     }
   	
   }
@@ -79,37 +82,20 @@ export class AddMedPage {
   	}
   }
 
-  // public getClass(time){
-  // 	var hr = parseInt(time.split(":"));
-  // 	if(hr < 12 && hr > 2){
-  // 		return "morning";
-  // 	}
-  // 	if(hr >= 12 && hr < 18){
-  // 		return "afternoon";
-  // 	}
-  // 	return "evening";
-  // }
 
   public doneAdding(){
-  	console.log("done adding");
+  	console.log("done adding/editing");
     console.log(this.medInfo);
-  	//var meds = [];
-  	// for(let t of this.medInfo.medtime){
-  	// 	meds.push({
-  	// 	id: this.nextId,
-   //  	name: this.medInfo.name,
-   //  	time: t.time,
-   //  	dosage:"180mg",
-   //  	qty: "1",
-   //  	icon:"icon.png",
-   //  	class: this.getClass(t.time)
-  	// 	})
-  	// 	this.nextId = this.nextId + 1;
-  	// }
-  	//console.log(meds);
-  	this.navCtrl.push(Page2,{
-  		newMed: this.medInfo,
-      edit: this.editFlag
-  	});
+    if(!this.editFlag){
+      // add the med to database
+      this.af.database.object("meds/"+ this.medInfo.id).set(this.medInfo);
+    }
+    else{
+      // add the med to database
+      this.meds = this.af.database.list('/meds')
+      this.meds.update(this.medInfo.id, this.medInfo);
+    }
+
+    this.navCtrl.push(Page2);
   }
 }

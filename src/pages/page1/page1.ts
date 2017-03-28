@@ -88,7 +88,7 @@ export class Page1 {
         var medT = new Date();
         medT.setHours(parseInt(med.time.split(":")[0]));
         medT.setMinutes(parseInt(med.time.split(":")[1]));
-        //if(new Date()< medT){
+        if(new Date()< medT){
           for(let not of notificationObj){
             if(not.at.getHours() == medT.getHours() && not.at.getMinutes() == medT.getMinutes()){
               not.text += ", " + med.name;
@@ -107,7 +107,7 @@ export class Page1 {
         }
         flag = false;
       }
-    //} // uncomment when testing done. Used to limit notification only to the ones eft in the day
+    } // uncomment when testing done. Used to limit notification only to the ones eft in the day
     console.log(notificationObj);
     LocalNotifications.schedule(notificationObj);
     // does not create notification for ibuprofen in the middle

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-
 import { NavController, NavParams,  ActionSheetController, Platform, ModalController, ViewController  } from 'ionic-angular';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { AddMedPage } from '../add-med/add-med';
 
@@ -9,72 +9,18 @@ import { AddMedPage } from '../add-med/add-med';
   templateUrl: 'page2.html'
 })
 export class Page2 {
-  meds: any [];
-  loadProgress: number;
+  //meds: any [];
+  meds: FirebaseListObservable<any>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, 
-    public platform: Platform, public modalCtrl: ModalController) {
-    var addedMed = navParams.get('newMed');
-    this.loadProgress = 50;
-     this.meds =[];
-    this.meds.push({
-      id:1,
-      name: "Advil",
-      qty: "1",
-      icon:"icon.png",
-      times: "one",
-      medtime: [{time: "07:00"}],
-      days: ["mon", "tues", "wed", "thurs", "fri", "sat", "sun"],
-      sound: "seashore",
-      noDays: 7,
-      daysDone: 2,
-      shape: "assets/img/capsule.png"
-    });
-    this.meds.push({
-      id:2,
-      name: "Ibuprofen",
-      qty: "1",
-      icon:"icon.png",
-      times: "one",
-      medtime: [{time: "07:00"}],
-      days: ["mon", "tues", "wed", "thurs", "fri", "sat", "sun"],
-      sound: "seashore",
-      noDays: 14,
-      daysDone: 1,
-      shape: "assets/img/pill_round.png"
-    });
-   
-    if(addedMed){
-      console.log("here");
-      this.meds = this.meds.concat(addedMed);
-      console.log(this.meds);
-      if(navParams.get('edit')){
-          let index = -1;
-          for(let i=0; i< this.meds.length; i++){
-            if(this.meds[i].id == addedMed.id){
-              index = i;
-              break;
-            }
-          }
-          this.meds.splice(index,1);
-      }
-    }
+    public platform: Platform, public modalCtrl: ModalController, public af: AngularFire) {
+    // Get med DB reference 
+    this.meds = af.database.list('/meds');
   }
-  public getNextId(){
-    var max = -1;
-    for(let med of this.meds ){
-      if(med.id> max){
-        max = med.id;
-      }
-    }
-    return max +1;
-  }
+
 
   public addMed(){
-
-    this.navCtrl.push(AddMedPage,{
-      nextId: this.getNextId()
-    });
+    this.navCtrl.push(AddMedPage);
   }
 
 
@@ -88,8 +34,7 @@ export class Page2 {
           role: 'destructive',
           icon: !this.platform.is('ios') ? 'trash' : null,
           handler: () => {
-            let index = this.meds.indexOf(med);
-            this.meds.splice(index,1);
+            this.meds.remove(med.id);
             console.log('Delete clicked');
           }
         },

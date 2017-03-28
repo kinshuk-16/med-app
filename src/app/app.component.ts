@@ -4,7 +4,7 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
-
+import { TestPage } from '../pages/test/test';
 
 
 @Component({
@@ -28,7 +28,8 @@ export class MyApp {
       { title: 'Medicine cabinet', component: Page2 },
       { title: 'Manage Support Group', component: Page2 },
       { title: 'Manage Rewards', component: Page2 },
-      { title: 'Generate Report', component: Page2 }
+      { title: 'Generate Report', component: Page2 },
+      { title: 'Test', component: TestPage } // only for development/debugging -- remove later
     ];
     this.pagesBottom = [
       { title: 'Settings', component: Page2 },

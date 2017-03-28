@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 
 import { LocalNotifications } from 'ionic-native';
+import { AngularFire /*, FirebaseListObservable*/ } from 'angularfire2';
 
 @Component({
   selector: 'page-page1',
@@ -12,58 +13,53 @@ export class Page1 {
    meds: any [];
    today: String;
    nextId: Number;
-
+   allMeds : any [];
   constructor(public navCtrl: NavController,  public navParams: NavParams, public platform: Platform, 
-    public alertCtrl: AlertController ) {
-    //binding event of local notification
+    public alertCtrl: AlertController, public af: AngularFire ) {
 
+    //binding event of local notification
     LocalNotifications.on("click", (notification) => {
         this.notificationResponse(notification.data);
-        //this.notificationResponse({});
     });
 
-  	//var addedMed = navParams.get('newMed');
-    // meds Object
-  	var d =new Date();
-  	this.today = d.toDateString();
+    //define today
+    var d =new Date();
+    this.today = d.toDateString();
+
+    //get database value via snapshot
+    this.allMeds =[];
+   var items = af.database.list('/meds',{ preserveSnapshot: true });
+    items.subscribe(snapshots => {
+        snapshots.forEach(snapshot => {
+          var med = snapshot.val();
+          this.allMeds.push(med);
+        });
+        this.prepareMedsObject();
+        console.log(this.meds);
+        this.scheduleNotification();
+      });
+
+  }
+
+  public prepareMedsObject(){
+    console.log(this.allMeds);
     this.meds =[];
-    this.meds.push({
-    	id:1,
-    	name: "Advil",
-    	time: "8:00",
-    	qty: "1",
-    	shape:"assets/img/capsule.png", 
-      color :"white",
-      taken: false
-    });
-    this.meds.push({
-    	id:2,
-    	name: "Ibuprofen",
-    	time: "15:35",
-    	qty: "1",
-    	shape:"assets/img/pill_round.png",
-      color :"white",
-      taken: false
-    });
-    this.meds.push({
-    	id:3,
-    	name: "Advil",
-    	time: "19:11",
-    	dosage:"180mg",
-    	qty: "1",
-    	shape:"assets/img/capsule.png",
-      color :"white",
-      taken: false
-    });
-    this.meds.push({
-      id:2,
-      name: "Ibuprofen",
-      time: "19:11",
-      qty: "1",
-      shape:"assets/img/pill_round.png",
-      color :"white",
-      taken: false
-    });
+    //create object
+    for(let m of this.allMeds){
+      //console.log(m.medtime.length);
+      for(let i=0 ; i<m.medtime.length; i++){
+        var medObj = {
+          name: m.name,
+          time: m.medtime[i].time,
+          qty: m.qty,
+          shape: m.shape,
+          color :"white",
+          taken: false,
+          sound: m.sound
+        }
+        this.meds.push(medObj);
+      }
+    }
     // sort meds object before display
     this.meds.sort(function(obj1, obj2){
       var medTime1 = parseInt(obj1.time.split(":")[0])*60 +parseInt(obj1.time.split(":")[1]);
@@ -75,11 +71,8 @@ export class Page1 {
     for(let med of this.meds){
         med.color = this.getMedStatus(med);
     }
-
-    // set notification
-    this.scheduleNotification();
-
   }
+
   public scheduleNotification(){
     LocalNotifications.cancelAll();
     var flag =false;
@@ -88,7 +81,7 @@ export class Page1 {
         var medT = new Date();
         medT.setHours(parseInt(med.time.split(":")[0]));
         medT.setMinutes(parseInt(med.time.split(":")[1]));
-        if(new Date()< medT){
+        //if(new Date()< medT){
           for(let not of notificationObj){
             if(not.at.getHours() == medT.getHours() && not.at.getMinutes() == medT.getMinutes()){
               not.text += ", " + med.name;
@@ -107,7 +100,7 @@ export class Page1 {
         }
         flag = false;
       }
-    } // uncomment when testing done. Used to limit notification only to the ones eft in the day
+    //} // uncomment when testing done. Used to limit notification only to the ones eft in the day
     console.log(notificationObj);
     LocalNotifications.schedule(notificationObj);
     // does not create notification for ibuprofen in the middle

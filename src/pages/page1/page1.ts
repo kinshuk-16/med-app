@@ -18,7 +18,7 @@ export class Page1 {
     //binding event of local notification
 
     LocalNotifications.on("click", (notification) => {
-        this.notificationResponse(notification.data.value);
+        this.notificationResponse(notification.data);
         //this.notificationResponse({});
     });
 
@@ -48,7 +48,7 @@ export class Page1 {
     this.meds.push({
     	id:3,
     	name: "Advil",
-    	time: "15:42",
+    	time: "19:11",
     	dosage:"180mg",
     	qty: "1",
     	shape:"assets/img/capsule.png",
@@ -58,7 +58,7 @@ export class Page1 {
     this.meds.push({
       id:2,
       name: "Ibuprofen",
-      time: "15:42",
+      time: "19:11",
       qty: "1",
       shape:"assets/img/pill_round.png",
       color :"white",
@@ -92,10 +92,7 @@ export class Page1 {
           for(let not of notificationObj){
             if(not.at.getHours() == medT.getHours() && not.at.getMinutes() == medT.getMinutes()){
               not.text += ", " + med.name;
-              not.data.value.push({
-                name:med.name,
-                time:med.time
-              });
+              not.data += " " + med.name+ "-"+ med.time; 
               flag = true;
             }
         }
@@ -105,7 +102,7 @@ export class Page1 {
             at: medT,
             text: "Time for "+ med.name,
             sound: 'file://audio/Seashore.wav',
-            data: {value: [{name:med.name, time:med.time}]}
+            data: med.name+ "-"+ med.time
           });
         }
         flag = false;
@@ -117,41 +114,37 @@ export class Page1 {
   }
 
   notificationResponse(notifData){
-    // var allMed="";
-    //   for(let item of notifData){
-    //       allMed += item.name;
-    //   }
-    //   let alert = this.alertCtrl.create({
-    //           title: "Hearth",
-    //           message: "Did you take "+allMed+ "?",
-    //           buttons: [
-    //             {
-    //                 text: 'No :('
-    //             },
-    //             {
-    //                 text: 'Yes :)',
-    //                 handler: data => {
-    //                     for(let item of notifData){
-    //                       for(let med of this.meds){
-    //                         if(item.name == med.name && item.time == med.time){
-    //                           med.taken = true;
-    //                           med.color = this.getMedStatus(med);
-    //                         }
-    //                       }
-    //                     }
-    //                     // unloackReward();
-    //                 }
-    //             }
-    //         ]
-    //       });
-    //       alert.present()
-    let alert = this.alertCtrl.create({
-              title: "Notification Clicked",
-              message: "You just clicked the scheduled notification",
-              buttons: ["OK"]
+      var medInfo=notifData.split(" ");
+      var allMeds = "";
+      var medData = [];
+      for(let m of medInfo){
+        medData.push(m.split("-"));
+        allMeds += " "+ m.split("-")[0];
+      }
+      let alert = this.alertCtrl.create({
+              title: "Hearth",
+              message: "Did you take your"+ allMeds +" today?" ,
+              buttons: [
+                {
+                    text: 'No'
+                },
+                {
+                    text: 'Yes! Unlock my reward!',
+                    handler: () => {
+                        for(let item of medData){
+                          for(let med of this.meds){
+                            if(item[0] == med.name && item[1] == med.time){
+                              med.taken = true;
+                              med.color = this.getMedStatus(med);
+                            }
+                          }
+                        }
+                        // unloackReward();
+                    }
+                }
+            ]
           });
           alert.present()
-
   }
 
   getMedStatus(med){

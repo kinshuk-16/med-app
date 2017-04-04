@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams} from 'ionic-angular';
 import { Page2 } from '../page2/page2';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import firebase from 'firebase';
 /*
   Generated class for the AddMed page.
 
@@ -25,6 +26,7 @@ export class AddMedPage {
     }
     else{ // adding
       var d = new Date();
+      var userId = firebase.auth().currentUser.uid;
       this.medInfo ={
         name: "",
         times: "one",
@@ -34,7 +36,8 @@ export class AddMedPage {
         noDays: undefined,
         shape:"assets/img/capsule.png",
         daysDone: 0,
-        id: d.toString()
+        id: d.toString(),
+        user: userId
       }
       
       //this.nextId = navParams.get("nextId");
@@ -96,6 +99,7 @@ export class AddMedPage {
       this.meds.update(this.medInfo.id, this.medInfo);
     }
 
-    this.navCtrl.push(Page2);
+    //this.navCtrl.push(Page2);
+    this.navCtrl.setRoot(Page2); 
   }
 }

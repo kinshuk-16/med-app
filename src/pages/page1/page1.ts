@@ -5,6 +5,11 @@ import { NavController, NavParams, Platform, AlertController } from 'ionic-angul
 import { LocalNotifications } from 'ionic-native';
 import { AngularFire /*, FirebaseListObservable*/ } from 'angularfire2';
 
+import {Subject} from 'rxjs/Subject';
+import { AddMedPage } from '../add-med/add-med';
+
+import firebase from 'firebase';
+
 @Component({
   selector: 'page-page1',
   templateUrl: 'page1.html'
@@ -14,9 +19,9 @@ export class Page1 {
    today: String;
    nextId: Number;
    allMeds : any [];
+   noMeds: boolean;
   constructor(public navCtrl: NavController,  public navParams: NavParams, public platform: Platform, 
     public alertCtrl: AlertController, public af: AngularFire ) {
-
     //binding event of local notification
     LocalNotifications.on("click", (notification) => {
         this.notificationResponse(notification.data);
@@ -27,22 +32,54 @@ export class Page1 {
     this.today = d.toDateString();
 
     //get database value via snapshot
+   //  this.allMeds =[];
+   // var items = af.database.list('/meds',{ preserveSnapshot: true });
+   //  items.subscribe(snapshots => {
+   //      snapshots.forEach(snapshot => {
+   //        var med = snapshot.val();
+   //        this.allMeds.push(med);
+   //      });
+   //      this.prepareMedsObject();
+   //      //console.log(this.meds);
+   //      this.scheduleNotification();
+   //    });
+
+    //query value for this user
+    const subject = new Subject();
+
+    const queryObservable = af.database.list('/meds', {
+      query: {
+        orderByChild: 'user',
+        equalTo: subject
+      }
+    });
     this.allMeds =[];
-   var items = af.database.list('/meds',{ preserveSnapshot: true });
-    items.subscribe(snapshots => {
-        snapshots.forEach(snapshot => {
-          var med = snapshot.val();
-          this.allMeds.push(med);
+    queryObservable.subscribe(queriedItems => {
+        queriedItems.forEach(medObj => {
+          //var med = medObj.val();
+          this.allMeds.push(medObj);
         });
         this.prepareMedsObject();
         console.log(this.meds);
+        if(this.meds.length === 0){
+          this.noMeds = true;
+        }
+        else{
+          this.noMeds = false;
+        }
         this.scheduleNotification();
       });
+
+    
+    var userId = firebase.auth().currentUser.uid;
+    //console.log(userId);
+    subject.next(userId);
+    
 
   }
 
   public prepareMedsObject(){
-    console.log(this.allMeds);
+    //console.log(this.allMeds);
     this.meds =[];
     //create object
     for(let m of this.allMeds){
@@ -101,7 +138,7 @@ export class Page1 {
         flag = false;
       }
     //} // uncomment when testing done. Used to limit notification only to the ones eft in the day
-    console.log(notificationObj);
+    //console.log(notificationObj);
     LocalNotifications.schedule(notificationObj);
     // does not create notification for ibuprofen in the middle
   }
@@ -160,7 +197,7 @@ export class Page1 {
   addTime(aTime,Otime){ // will cause a bug if the time exceeds 24 hr. Not worrying about that right now
     var medTime = parseInt(Otime.split(":")[0])*60 +parseInt(Otime.split(":")[1]);
     var rTime = medTime + parseInt(aTime);
-    console.log(rTime);
+    //console.log(rTime);
     var h = Math.floor(rTime/60);
     var m = rTime - h* 60;
     return h+":"+m;
@@ -214,6 +251,10 @@ export class Page1 {
         });
  
         prompt.present(); 
+  }
+
+  addMed(){
+    this.navCtrl.push(AddMedPage);
   }
 
 

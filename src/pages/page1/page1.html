@@ -9,13 +9,7 @@
 
 <ion-content>
   <ion-list>
-  <!-- <ion-item *ngFor="let med of meds" [ngStyle]="{'background-color': med.color}">
-    <ion-avatar item-left>
-      <img [src]="med.shape">
-    </ion-avatar>
-    <h2>{{med.name}}</h2>
-    <p>qty: {{ med.qty }} time: {{ med.time }}</p>
-  </ion-item> -->
+ 
 
   <ion-item-sliding *ngFor="let med of meds" >
       <ion-item [ngStyle]="{'background-color': med.color}">
@@ -39,12 +33,17 @@
 
 </ion-list>
 
+<div padding *ngIf="noMeds">
+  Hi there! Looks like your medicine cabinet is empty! <br><br>
+  <div id="med-import-manual">
+    <button ion-button color="secondary" (click)="addMed()">Add your medicine manually</button>
+  </div>
+  <div id="med-import-option">
+    or
+  </div>
+  <div id="med-import-epic">
+    <button ion-button  color="secondary">Import Medicine from Epic</button>
+  </div>
+</div>
 
-
-
- <!-- <ion-fab right bottom>
-  <button ion-fab icon-only (click)="addMed()">
-    <ion-icon name="add"></ion-icon>
-  </button>
-</ion-fab> -->
 </ion-content>

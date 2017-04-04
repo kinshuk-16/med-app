@@ -3,6 +3,7 @@ import { NavController, NavParams,  ActionSheetController, Platform, ModalContro
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { AddMedPage } from '../add-med/add-med';
+import firebase from 'firebase';
 
 @Component({
   selector: 'page-page2',
@@ -14,8 +15,19 @@ export class Page2 {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, 
     public platform: Platform, public modalCtrl: ModalController, public af: AngularFire) {
-    // Get med DB reference 
-    this.meds = af.database.list('/meds');
+    // Get med DB reference by query
+    var userId = firebase.auth().currentUser.uid;
+    this.meds = af.database.list('/meds', {
+      query: {
+        orderByChild: 'user',
+        equalTo: userId
+      }
+    });
+
+    this.meds.subscribe(queriedItems => {
+      console.log(queriedItems);  
+    });
+    
   }
 
 
@@ -99,13 +111,6 @@ export class Page2 {
           Time
         <ion-note item-right>
           {{times}}
-        </ion-note>
-      </ion-item>
-
-      <ion-item>
-          Quantity per time
-        <ion-note item-right>
-          {{medicine.qty}}
         </ion-note>
       </ion-item>
 

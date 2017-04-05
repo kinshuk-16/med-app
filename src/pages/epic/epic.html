@@ -1,0 +1,49 @@
+<!--
+  Generated template for the Epic page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header >
+  <ion-navbar>
+    <ion-title><div class="nav-bar">Epic Electronic Record</div></ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+	<h2> Retrieve Medication Record From Epic</h2>
+	<div class="epic-text">
+		<p>Epic is Electronic Health Record software for mid-size and large medical groups, hospitals and integrated healthcare organizations. If your hospital or health care provier uses Epic system to hold your record you could retrive it here in few simple steps. Please fill in some details below and we will try to pull up your medication record from Epic.</p>
+	</div>
+	<div>
+		<ion-list>
+		  <ion-item>
+		    <ion-label>First Name</ion-label>
+		    <ion-input type="text" [(ngModel)]="fname"></ion-input>
+		  </ion-item>
+
+		  <ion-item>
+		    <ion-label>Last Name</ion-label>
+		    <ion-input type="text" [(ngModel)]="lname"></ion-input>
+		  </ion-item>
+
+		  <ion-item>
+		      <ion-label>Gender</ion-label>
+		      <ion-select [(ngModel)]="gender">
+		        <ion-option value="female">Female</ion-option>
+		        <ion-option value="male">Male</ion-option>
+		        <ion-option value="uspecified">Unspcecified</ion-option>
+		      </ion-select>
+		   </ion-item>
+
+		</ion-list>
+	</div>
+	<div class="epic-text">
+		We do not save the information you just filled out anywhere, we will just make one attempt to retriev your data from Epic system and then discard all your data.
+	</div>
+
+	<div id="med-import-epic">
+	    <button ion-button color="secondary" (click)="callEpic()">Retrieve record from Epic</button>
+	  </div>
+</ion-content>

@@ -58,11 +58,11 @@ export class MyApp {
       { title: 'Medicine cabinet', component: Page2 },
       { title: 'Manage Support Group', component: Page2 },
       { title: 'Manage Rewards', component: Page2 },
-      { title: 'Generate Report', component: Page2 },
-      { title: 'Test', component: TestPage } // only for development/debugging -- remove later
+      { title: 'Generate Report', component: Page2 }
+      //{ title: 'Test', component: TestPage } // only for development/debugging -- remove later
     ];
     this.pagesBottom = [
-      { title: 'Settings', component: Page2 },
+      //{ title: 'Settings', component: Page2 },
       { title: 'Logout', component: Page2 }
     ];
     console.log("here"+ this.rootPage);

@@ -7,6 +7,7 @@ import { AngularFire /*, FirebaseListObservable*/ } from 'angularfire2';
 
 import {Subject} from 'rxjs/Subject';
 import { AddMedPage } from '../add-med/add-med';
+import { EpicPage } from '../epic/epic';
 
 import firebase from 'firebase';
 
@@ -255,6 +256,10 @@ export class Page1 {
 
   addMed(){
     this.navCtrl.push(AddMedPage);
+  }
+
+  opneEpic(){
+    this.navCtrl.push(EpicPage);
   }
 
 

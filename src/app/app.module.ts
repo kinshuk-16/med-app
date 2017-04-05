@@ -9,6 +9,7 @@ import { AddMedPage } from '../pages/add-med/add-med';
 import { TestPage } from '../pages/test/test';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
+import { EpicPage } from '../pages/epic/epic';
 
 //component
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
@@ -39,6 +40,7 @@ export const firebaseConfig = {
     ProgressBarComponent,
     LoginPage,
     SignupPage,
+    EpicPage,
     TestPage ///just to test out functionalities
   ],
   imports: [
@@ -54,6 +56,7 @@ export const firebaseConfig = {
     DetailsPage,
     LoginPage,
     SignupPage,
+    EpicPage,
     TestPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},

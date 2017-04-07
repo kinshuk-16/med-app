@@ -10,6 +10,7 @@ import { TestPage } from '../pages/test/test';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { EpicPage } from '../pages/epic/epic';
+import { RewardPage } from '../pages/reward/reward';
 
 //component
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
@@ -41,6 +42,7 @@ export const firebaseConfig = {
     LoginPage,
     SignupPage,
     EpicPage,
+    RewardPage,
     TestPage ///just to test out functionalities
   ],
   imports: [
@@ -57,6 +59,7 @@ export const firebaseConfig = {
     LoginPage,
     SignupPage,
     EpicPage,
+    RewardPage,
     TestPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},

@@ -24,9 +24,9 @@ export class Page2 {
       }
     });
 
-    this.meds.subscribe(queriedItems => {
-      console.log(queriedItems);  
-    });
+    // this.meds.subscribe(queriedItems => {
+    //   console.log(queriedItems);  
+    // });
     
   }
 

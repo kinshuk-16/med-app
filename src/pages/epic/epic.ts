@@ -37,6 +37,12 @@ export class EpicPage {
   	return this.http.get(url).map((res:Response) => res.json());
   }
 
+  addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
   prepareMeds(id){
   	this.getMeds(id).subscribe(data =>{
   		if(data.entry[0].resource.medicationReference){
@@ -55,7 +61,9 @@ export class EpicPage {
 			        shape:"assets/img/capsule.png",
 			        daysDone: 0,
 			        id: d.toString()+index,
-			        user: userId
+			        user: userId,
+              lastDay: this.addDays(d, 70).toDateString(),
+              taken:[{date:""}]
 			      };
 			      //console.log(this.medInfo);
 	      		  this.af.database.object("meds/"+ this.medInfo.id).set(this.medInfo);
@@ -64,7 +72,7 @@ export class EpicPage {
   		}
   		else{
   			let alert = this.alertCtrl.create({
-	            message: "Your record wasn't found. Check the details and make sure it is correct or enter manually.",
+	            message: "Looks like the system does not have any medicine added under your name. Please enter your medicine manually.",
 	            buttons: [
 	              {
 	                text: "Ok",

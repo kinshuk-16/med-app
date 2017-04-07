@@ -23,6 +23,7 @@ export class Page1 {
    noMeds: boolean;
   constructor(public navCtrl: NavController,  public navParams: NavParams, public platform: Platform, 
     public alertCtrl: AlertController, public af: AngularFire ) {
+    console.log("Something unique to test stuff");
     //binding event of local notification
     LocalNotifications.on("click", (notification) => {
         this.notificationResponse(notification.data);
@@ -32,18 +33,6 @@ export class Page1 {
     var d =new Date();
     this.today = d.toDateString();
 
-    //get database value via snapshot
-   //  this.allMeds =[];
-   // var items = af.database.list('/meds',{ preserveSnapshot: true });
-   //  items.subscribe(snapshots => {
-   //      snapshots.forEach(snapshot => {
-   //        var med = snapshot.val();
-   //        this.allMeds.push(med);
-   //      });
-   //      this.prepareMedsObject();
-   //      //console.log(this.meds);
-   //      this.scheduleNotification();
-   //    });
 
     //query value for this user
     const subject = new Subject();
@@ -57,11 +46,9 @@ export class Page1 {
     this.allMeds =[];
     queryObservable.subscribe(queriedItems => {
         queriedItems.forEach(medObj => {
-          //var med = medObj.val();
           this.allMeds.push(medObj);
         });
         this.prepareMedsObject();
-        console.log(this.meds);
         if(this.meds.length === 0){
           this.noMeds = true;
         }
@@ -73,10 +60,13 @@ export class Page1 {
 
     
     var userId = firebase.auth().currentUser.uid;
-    //console.log(userId);
     subject.next(userId);
     
 
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad RewardPage');
   }
 
   public prepareMedsObject(){
@@ -89,7 +79,6 @@ export class Page1 {
         var medObj = {
           name: m.name,
           time: m.medtime[i].time,
-          qty: m.qty,
           shape: m.shape,
           color :"white",
           taken: false,

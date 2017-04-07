@@ -1,0 +1,65 @@
+page-reward {
+	.reward-header{
+		height: 30px;
+	    background-color: #e0e0e0;
+	    padding-top: 5px;
+	    padding-left: 10px;
+	    font-size: larger;
+	    color: #424242;
+	    font-weight: 500;
+	}
+	.reward-catagory-container{
+		//height:100px;
+		display:flex;
+		flex-wrap: wrap;
+		padding-left:2px;
+		padding-right:2px;
+	}
+	.reward-container{
+	    width: 30%;
+	    height: 80px;
+	    margin-left: 3px;
+	    margin-right : 3px;
+	    margin-top: 5px;
+	    margin-bottom: 5px;
+	    border-radius: 5px;
+	    background-color: #f4f4f4;
+	    //padding-top: 30px;
+	    display: inline-block;
+	}
+	// .reward-text{
+	// 	margin-left: 12px;
+	//     font-size: large;
+	//     font-weight: bold;
+	//     letter-spacing: 2px;
+	// }
+	.reward-container .reward-add{
+		visibility:hidden;
+	}
+	.reward-container:hover .reward-add{
+		visibility:visible;
+	}
+	// .reward-container:hover .reward-text{
+	// 	display: none;
+	// }
+	.reward-thumbnail{
+		height: 75px;
+		margin-left: 10px;
+    	margin-top: 2px;
+	}
+	.reward-add-icon{
+		padding-left:33px;
+		font-size: 30px;
+		padding-top:15px;
+	}
+	.reward-text{
+		padding-left:2px;
+		font-size: 15px;
+		padding-top:2px;
+	}
+	.reward-container:hover .reward-thumbnail{
+	 	display: none;
+	 }
+
+}
+

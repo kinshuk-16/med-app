@@ -33,11 +33,13 @@ export class AddMedPage {
         medtime: [{time: "07:00"}],
         days: ["mon", "tues", "wed", "thurs", "fri", "sat", "sun"],
         sound: "seashore",
-        noDays: undefined,
+        noDays: 0,
         shape:"assets/img/capsule.png",
         daysDone: 0,
         id: d.toString(),
-        user: userId
+        user: userId,
+        lastDay: "",
+        taken: [{date:""}]
       }
       
       //this.nextId = navParams.get("nextId");
@@ -85,12 +87,20 @@ export class AddMedPage {
   	}
   }
 
+  addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
 
   public doneAdding(){
   	console.log("done adding/editing");
-    console.log(this.medInfo);
+    //console.log(this.medInfo);
     if(!this.editFlag){
       // add the med to database
+      this.medInfo.lastDay = this.addDays(new Date(), this.medInfo.noDays).toDateString();
+      console.log(this.medInfo);
       this.af.database.object("meds/"+ this.medInfo.id).set(this.medInfo);
     }
     else{

@@ -10,9 +10,8 @@ import firebase from 'firebase';
   templateUrl: 'page2.html'
 })
 export class Page2 {
-  //meds: any [];
   meds: FirebaseListObservable<any>;
-
+  medObjAll: any [];
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, 
     public platform: Platform, public modalCtrl: ModalController, public af: AngularFire) {
     // Get med DB reference by query
@@ -24,9 +23,21 @@ export class Page2 {
       }
     });
 
-    // this.meds.subscribe(queriedItems => {
-    //   console.log(queriedItems);  
-    // });
+    this.meds.subscribe(queriedItems => {
+      this.medObjAll =[];
+      queriedItems.forEach(medObj =>{
+        var cnt = 0;
+        //console.log(medObj.taken);
+        for(let prop in medObj.taken){
+            cnt += 1;
+            //console.log("here");
+        }
+        var m = medObj;
+        m.cntOfTaken = cnt;
+        this.medObjAll.push(m);
+      });
+      //console.log(this.medObjAll);
+    });
     
   }
 

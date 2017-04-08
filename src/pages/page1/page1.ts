@@ -23,7 +23,6 @@ export class Page1 {
    noMeds: boolean;
   constructor(public navCtrl: NavController,  public navParams: NavParams, public platform: Platform, 
     public alertCtrl: AlertController, public af: AngularFire ) {
-    console.log("Something unique to test stuff");
     //binding event of local notification
     LocalNotifications.on("click", (notification) => {
         this.notificationResponse(notification.data);
@@ -43,8 +42,9 @@ export class Page1 {
         equalTo: subject
       }
     });
-    this.allMeds =[];
+    //this.allMeds =[];
     queryObservable.subscribe(queriedItems => {
+        this.allMeds = [];
         queriedItems.forEach(medObj => {
           this.allMeds.push(medObj);
         });
@@ -65,23 +65,39 @@ export class Page1 {
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RewardPage');
-  }
-
   public prepareMedsObject(){
     //console.log(this.allMeds);
     this.meds =[];
-    //create object
+    
     for(let m of this.allMeds){
-      //console.log(m.medtime.length);
+      var lastD = new Date(m.lastDay);
+      if(lastD <= new Date()){
+        //remove from current table
+        this.af.database.list('/meds').remove(m.id);
+        //add to History table
+        this.af.database.object("medsHistory/"+ m.id).set(m);
+        continue;
+      }
+      // determine taken or not
+      
+
       for(let i=0 ; i<m.medtime.length; i++){
+        var took = false;
+        for(let prop in m.taken){
+          var today = new Date(m.taken[prop].date);
+          if(m.taken[prop].date == today.toDateString()){
+            if(m.taken[prop].time == m.medtime[i].time){
+              took = true;
+            }
+          }
+        }
         var medObj = {
+          id: m.id,
           name: m.name,
           time: m.medtime[i].time,
           shape: m.shape,
           color :"white",
-          taken: false,
+          taken: took,
           sound: m.sound
         }
         this.meds.push(medObj);
@@ -132,6 +148,18 @@ export class Page1 {
     LocalNotifications.schedule(notificationObj);
     // does not create notification for ibuprofen in the middle
   }
+  updateTakenDb(med){
+      //var taken = [];
+      //var timesTaken = 0;
+      var d = new Date();
+      var ds = d.toDateString();
+      this.af.database.list('/meds/'+med.id+'/taken').push({
+        date: ds,
+        time: med.time
+      });
+      console.log("outside");
+      //console.log(taken);
+  }
 
   notificationResponse(notifData){
       var medInfo=notifData.split(" ");
@@ -156,6 +184,8 @@ export class Page1 {
                             if(item[0] == med.name && item[1] == med.time){
                               med.taken = true;
                               med.color = this.getMedStatus(med);
+                              //update db 
+                              this.updateTakenDb(med);
                             }
                           }
                         }
@@ -198,6 +228,7 @@ export class Page1 {
      let index = this.meds.indexOf(med);
      this.meds[index].taken = true;
      this.meds[index].color = this.getMedStatus(med);
+     this.updateTakenDb(med);
   }
 
   snooze(med){

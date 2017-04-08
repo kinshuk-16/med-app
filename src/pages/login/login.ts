@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { NavController, NavParams,LoadingController, AlertController  } from 'ionic-angular';
+import { NavController,LoadingController, AlertController  } from 'ionic-angular';
 import { AuthData } from '../../providers/auth-data';
 import { Page1 } from '../page1/page1';
 import { SignupPage } from '../signup/signup';

@@ -53,17 +53,18 @@ export class EpicPage {
 	  			//console.log(entry.resource.medicationReference.display);
 	  			this.medInfo ={
 			        name: entry.resource.medicationReference.display.split(" ")[0],
-			        times: "one",
+			        times: 1,
 			        medtime: [{time: "07:00"}],
 			        days: ["mon", "tues", "wed", "thurs", "fri", "sat", "sun"],
 			        sound: "seashore",
 			        noDays: 7,
 			        shape:"assets/img/capsule.png",
-			        daysDone: 0,
+			        timesTaken: 0,
 			        id: d.toString()+index,
 			        user: userId,
-              lastDay: this.addDays(d, 70).toDateString(),
-              taken:[{date:""}]
+              lastDay: this.addDays(d, 7).toDateString(),
+              startDay: d.toDateString(),
+              taken: ""
 			      };
 			      //console.log(this.medInfo);
 	      		  this.af.database.object("meds/"+ this.medInfo.id).set(this.medInfo);

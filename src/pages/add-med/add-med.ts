@@ -29,17 +29,17 @@ export class AddMedPage {
       var userId = firebase.auth().currentUser.uid;
       this.medInfo ={
         name: "",
-        times: "one",
+        times: 1,
         medtime: [{time: "07:00"}],
         days: ["mon", "tues", "wed", "thurs", "fri", "sat", "sun"],
         sound: "seashore",
-        noDays: 0,
+        noDays: 7,
         shape:"assets/img/capsule.png",
-        daysDone: 0,
         id: d.toString(),
         user: userId,
         lastDay: "",
-        taken: [{date:""}]
+        startDay: d.toDateString(),
+        taken: ""
       }
       
       //this.nextId = navParams.get("nextId");
@@ -57,13 +57,13 @@ export class AddMedPage {
   	//console.log(this.medInfo.medtime);
   	
 
-  	if(this.medInfo.times == "one"){
+  	if(this.medInfo.times == 1){
   		this.medInfo.medtime = []; // none of the times are displaying
   		this.medInfo.medtime.push({
   			time: "07:00"
   		});
   	}
-  	else if(this.medInfo.times == "two"){
+  	else if(this.medInfo.times == 2){
   		this.medInfo.medtime = []; 
   		this.medInfo.medtime.push({
   			time: "07:00"
@@ -71,7 +71,7 @@ export class AddMedPage {
   			time: "19:00"
   		});
   	}
-  	else if(this.medInfo.times == "three"){
+  	else if(this.medInfo.times == 3){
   		this.medInfo.medtime = [];
   		this.medInfo.medtime.push({
   			time: "07:00"
@@ -90,6 +90,7 @@ export class AddMedPage {
   addDays(date, days) {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
+    //console.log(result);
     return result;
   }
 
@@ -99,12 +100,13 @@ export class AddMedPage {
     //console.log(this.medInfo);
     if(!this.editFlag){
       // add the med to database
-      this.medInfo.lastDay = this.addDays(new Date(), this.medInfo.noDays).toDateString();
+      this.medInfo.lastDay = this.addDays(this.medInfo.startDay, this.medInfo.noDays).toDateString();
       console.log(this.medInfo);
       this.af.database.object("meds/"+ this.medInfo.id).set(this.medInfo);
     }
     else{
-      // add the med to database
+      this.medInfo.lastDay = this.addDays(this.medInfo.startDay, parseInt(this.medInfo.noDays)).toDateString();
+      console.log(this.medInfo);
       this.meds = this.af.database.list('/meds')
       this.meds.update(this.medInfo.id, this.medInfo);
     }

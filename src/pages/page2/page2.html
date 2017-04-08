@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
- <ion-card  *ngFor="let med of meds | async" class="med-card" (click)="openMenu(med)">
+ <ion-card  *ngFor="let med of medObjAll" class="med-card" (click)="openMenu(med)">
         <ion-grid>
           <ion-row>
             <ion-col col-4>
@@ -20,8 +20,8 @@
                   <ion-col col-12><h1>{{med.name}}</h1></ion-col>
                 </ion-row>
                 <ion-row>
-                  <ion-col col-4>{{med.daysDone}}/{{med.noDays}}</ion-col>
-                  <ion-col col-8><progress-bar [progress]="( med.daysDone/ med.noDays) *100"></progress-bar></ion-col>
+                  <ion-col col-4>{{med.cntOfTaken}}/{{med.noDays * med.times}}</ion-col>
+                  <ion-col col-8><progress-bar [progress]="( med.cntOfTaken/ ( med.noDays * med.times)) *100"></progress-bar></ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col col-4><ion-icon name="contacts"></ion-icon></ion-col>
@@ -32,13 +32,6 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        
-        <!-- <div id="detail">
-          <ion-col col-6><ion-icon name="clipboard"></ion-icon> Detail</ion-col>
-        </div>
-        <div id="delete">
-          <ion-col col-6><ion-icon name="trash"></ion-icon> Delete</ion-col>
-        </div> -->
   </ion-card> 
 
  <ion-fab right bottom>
@@ -46,4 +39,7 @@
     <ion-icon name="add"></ion-icon>
   </button>
 </ion-fab>
+
+
+
 </ion-content>

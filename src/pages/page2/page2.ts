@@ -3,6 +3,7 @@ import { NavController, NavParams,  ActionSheetController, Platform, ModalContro
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { AddMedPage } from '../add-med/add-med';
+import { SettingsPage } from '../settings/settings';
 import firebase from 'firebase';
 
 @Component({
@@ -79,7 +80,17 @@ export class Page2 {
               medicine: med
             });
           }
-        }
+        },
+        {
+          text: 'Settings',
+          icon: !this.platform.is('ios') ? 'settings' : null,
+          handler: () => {
+            console.log('Settings clicked');
+            this.navCtrl.push(SettingsPage,{
+              medicine: med
+            });
+          }
+        },
       ]
     });
     actionSheet.present();

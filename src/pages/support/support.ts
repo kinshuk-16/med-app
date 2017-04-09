@@ -5,6 +5,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import firebase from 'firebase';
 import { AlertController } from 'ionic-angular';
 
+declare var window: any;
 /*
   Generated class for the Support page.
 
@@ -70,7 +71,7 @@ export class SupportPage {
           }
         },
         {
-          text: 'Add Default',
+          text: 'Add favourite',
           icon: !this.platform.is('ios') ? 'star' : null,
           handler: () => {
             console.log('edit clicked');
@@ -78,7 +79,7 @@ export class SupportPage {
           }
         },
         {
-          text: 'Remove Default',
+          text: 'Remove favourite',
           icon: !this.platform.is('ios') ? 'close' : null,
           handler: () => {
             console.log('edit clicked');
@@ -167,6 +168,18 @@ export class SearchPage {
   	};
   	var uniqueId = userId+"-"+name; 
   	this.af.database.object("support/"+ uniqueId).set(contactObj);
+
+  	// SMS to the person
+ 	var message = "Hey there! I am using this new app to keep record of my medication regime. Help me in this endeavour by seding me some encouring or humourous messages! Thanks!";
+ 	//var message ="haha";
+
+  	if(window.SMS) window.SMS.sendSMS(num,message,()=>{
+       //alert("sent");
+       ;
+     },(error)=>{
+      //alert("not sent");
+      ;
+     });
   	// alert
 
     let confirm = this.alertCtrl.create({

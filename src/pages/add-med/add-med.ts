@@ -27,6 +27,7 @@ export class AddMedPage {
     else{ // adding
       var d = new Date();
       var userId = firebase.auth().currentUser.uid;
+      var uniqueId = d.toString()+ "-"+userId; 
       this.medInfo ={
         name: "",
         times: 1,
@@ -35,11 +36,13 @@ export class AddMedPage {
         sound: "seashore",
         noDays: 7,
         shape:"assets/img/capsule.png",
-        id: d.toString(),
+        id: uniqueId,
         user: userId,
         lastDay: "",
         startDay: d.toDateString(),
-        taken: ""
+        taken: "",
+        support: true,
+        reward: true
       }
       
       //this.nextId = navParams.get("nextId");

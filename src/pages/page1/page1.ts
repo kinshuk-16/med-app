@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 
 import { LocalNotifications } from 'ionic-native';
-import { AngularFire /*, FirebaseListObservable*/ } from 'angularfire2';
+import { AngularFire , FirebaseListObservable } from 'angularfire2';
 
 import {Subject} from 'rxjs/Subject';
 import { AddMedPage } from '../add-med/add-med';
@@ -11,6 +11,8 @@ import { EpicPage } from '../epic/epic';
 import { RewardDisplayPage } from '../reward-display/reward-display';
 
 import firebase from 'firebase';
+
+declare var window: any;
 
 @Component({
   selector: 'page-page1',
@@ -22,6 +24,8 @@ export class Page1 {
    nextId: Number;
    allMeds : any [];
    noMeds: boolean;
+   userId: string;
+   queryObservable: FirebaseListObservable<any>;
   constructor(public navCtrl: NavController,  public navParams: NavParams, public platform: Platform, 
     public alertCtrl: AlertController, public af: AngularFire ) {
     //binding event of local notification
@@ -37,14 +41,14 @@ export class Page1 {
     //query value for this user
     const subject = new Subject();
 
-    const queryObservable = af.database.list('/meds', {
+    this.queryObservable = af.database.list('/meds', {
       query: {
         orderByChild: 'user',
         equalTo: subject
       }
     });
     //this.allMeds =[];
-    queryObservable.subscribe(queriedItems => {
+    this.queryObservable.subscribe(queriedItems => {
         this.allMeds = [];
         queriedItems.forEach(medObj => {
           this.allMeds.push(medObj);
@@ -60,8 +64,8 @@ export class Page1 {
       });
 
     
-    var userId = firebase.auth().currentUser.uid;
-    subject.next(userId);
+    this.userId = firebase.auth().currentUser.uid;
+    subject.next(this.userId);
     
 
   }
@@ -99,7 +103,9 @@ export class Page1 {
           shape: m.shape,
           color :"white",
           taken: took,
-          sound: m.sound
+          sound: m.sound,
+          support: m.support,
+          reward: m.reward
         }
         this.meds.push(medObj);
       }
@@ -134,11 +140,24 @@ export class Page1 {
             }
         }
         if(!flag){
+          //var sound
+          
+          var sound = "";
+          if(med.sound == ""){
+            sound = "";
+          }
+          else if(med.sound == "Default"){
+            sound = "res://platform_default";
+          }
+          else{
+            sound = "file://audio/"+med.sound+".wav"
+          }
+          console.log(sound); 
           notificationObj.push({
             title: "Hearth",
             at: medT,
             text: "Time for "+ med.name,
-            sound: 'file://audio/Seashore.wav',
+            sound: sound,
             data: med.name+ "-"+ med.time
           });
         }
@@ -162,6 +181,31 @@ export class Page1 {
       //console.log(taken);
   }
 
+  sendMessage(){
+    var queryObservable = this.af.database.list('/support', {
+      query: {
+        orderByChild: 'uid',
+        equalTo: this.userId
+      }
+    });
+    //alert("here");
+    var num = "";
+    queryObservable.subscribe(queriedItems => {
+      //alert(JSON.stringify(queriedItems));
+        queriedItems.forEach(person =>{
+          if(person.default){
+            num = person.number;
+            //alert(person.name);
+          }
+        });
+        if(num!= ""){
+          var message ="Oh no! I missed my medicine today! Help keep me on track.";
+          if(window.SMS) window.SMS.sendSMS(num,message,()=>{;},(error)=>{;});
+        }
+       });
+
+  }
+
   notificationResponse(notifData){
       var medInfo=notifData.split(" ");
       var allMeds = "";
@@ -175,7 +219,10 @@ export class Page1 {
               message: "Did you take your"+ allMeds +" today?" ,
               buttons: [
                 {
-                    text: 'No'
+                    text: 'No',
+                    handler: () =>{
+                      this.sendMessage();
+                    }
                 },
                 {
                     text: 'Yes! Unlock my reward!',
@@ -187,7 +234,9 @@ export class Page1 {
                               med.color = this.getMedStatus(med);
                               //update db 
                               this.updateTakenDb(med);
-                              this.navCtrl.push(RewardDisplayPage);
+                              this.navCtrl.push(RewardDisplayPage,{
+                                medicine: med
+                              });
 
                             }
                           }

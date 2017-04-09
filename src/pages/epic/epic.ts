@@ -50,6 +50,7 @@ export class EpicPage {
 	  			//console.log(entry);
 	  			var d = new Date();
 	      		var userId = firebase.auth().currentUser.uid;
+            var uniqueId = d.toString()+ "-"+userId; 
 	  			//console.log(entry.resource.medicationReference.display);
 	  			this.medInfo ={
 			        name: entry.resource.medicationReference.display.split(" ")[0],
@@ -60,11 +61,13 @@ export class EpicPage {
 			        noDays: 7,
 			        shape:"assets/img/capsule.png",
 			        timesTaken: 0,
-			        id: d.toString()+index,
+			        id: uniqueId +index,
 			        user: userId,
               lastDay: this.addDays(d, 7).toDateString(),
               startDay: d.toDateString(),
-              taken: ""
+              taken: "",
+              support: true,
+              reward: true
 			      };
 			      //console.log(this.medInfo);
 	      		  this.af.database.object("meds/"+ this.medInfo.id).set(this.medInfo);

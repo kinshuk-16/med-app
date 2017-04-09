@@ -13,6 +13,7 @@ import { EpicPage } from '../pages/epic/epic';
 import { RewardPage } from '../pages/reward/reward';
 import { RewardDisplayPage } from '../pages/reward-display/reward-display';
 import { SupportPage, SearchPage } from '../pages/support/support';
+import { SettingsPage } from '../pages/settings/settings';
 
 //component
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
@@ -23,6 +24,7 @@ import { AuthData } from '../providers/auth-data';
 
 // Import the AF2 Module
 import { AngularFireModule } from 'angularfire2';
+
  
 // AF2 Settings
 export const firebaseConfig = {
@@ -48,6 +50,7 @@ export const firebaseConfig = {
     RewardDisplayPage,
     SupportPage,
     SearchPage,
+    SettingsPage,
     TestPage ///just to test out functionalities
   ],
   imports: [
@@ -68,6 +71,7 @@ export const firebaseConfig = {
     RewardDisplayPage,
     SupportPage,
     SearchPage,
+    SettingsPage,
     TestPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},

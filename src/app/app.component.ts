@@ -8,6 +8,7 @@ import { TestPage } from '../pages/test/test';
 import { LoginPage } from '../pages/login/login';
 import { AuthData } from '../providers/auth-data';
 import { RewardPage } from '../pages/reward/reward';
+import { SupportPage } from '../pages/support/support';
 
 import firebase from 'firebase';
 
@@ -57,7 +58,7 @@ export class MyApp {
     this.today = { title: 'Today: '+today, component: Page1 };
     this.pagesTop = [
       { title: 'Medicine cabinet', component: Page2 },
-      { title: 'Manage Support Group', component: Page2 },
+      { title: 'Manage Support Group', component: SupportPage  },
       { title: 'Manage Rewards', component: RewardPage },
       { title: 'Generate Report', component: Page2 }
       //{ title: 'Test', component: TestPage } // only for development/debugging -- remove later

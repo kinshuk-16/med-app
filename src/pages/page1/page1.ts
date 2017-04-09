@@ -8,6 +8,7 @@ import { AngularFire /*, FirebaseListObservable*/ } from 'angularfire2';
 import {Subject} from 'rxjs/Subject';
 import { AddMedPage } from '../add-med/add-med';
 import { EpicPage } from '../epic/epic';
+import { RewardDisplayPage } from '../reward-display/reward-display';
 
 import firebase from 'firebase';
 
@@ -186,6 +187,8 @@ export class Page1 {
                               med.color = this.getMedStatus(med);
                               //update db 
                               this.updateTakenDb(med);
+                              this.navCtrl.push(RewardDisplayPage);
+
                             }
                           }
                         }
@@ -229,6 +232,7 @@ export class Page1 {
      this.meds[index].taken = true;
      this.meds[index].color = this.getMedStatus(med);
      this.updateTakenDb(med);
+     this.navCtrl.push(RewardDisplayPage);
   }
 
   snooze(med){

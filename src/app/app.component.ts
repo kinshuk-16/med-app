@@ -4,12 +4,13 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
-import { TestPage } from '../pages/test/test';
+//import { TestPage } from '../pages/test/test';
 import { LoginPage } from '../pages/login/login';
 import { AuthData } from '../providers/auth-data';
 import { RewardPage } from '../pages/reward/reward';
 import { SupportPage } from '../pages/support/support';
-import { RewardDisplayPage } from '../pages/reward-display/reward-display';
+//import { RewardDisplayPage } from '../pages/reward-display/reward-display';
+import { ReportPage } from '../pages/report/report';
 
 import firebase from 'firebase';
 
@@ -61,7 +62,7 @@ export class MyApp {
       { title: 'Medicine cabinet', component: Page2 },
       { title: 'Manage Support Group', component: SupportPage  },
       { title: 'Manage Rewards', component: RewardPage },
-      { title: 'Generate Report', component: Page2 }
+      { title: 'Generate Report', component: ReportPage }
       //{ title: 'Test', component: RewardDisplayPage } // only for development/debugging -- remove later
     ];
     this.pagesBottom = [

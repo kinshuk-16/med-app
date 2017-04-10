@@ -14,6 +14,7 @@ import { RewardPage } from '../pages/reward/reward';
 import { RewardDisplayPage } from '../pages/reward-display/reward-display';
 import { SupportPage, SearchPage } from '../pages/support/support';
 import { SettingsPage } from '../pages/settings/settings';
+import { ReportPage } from '../pages/report/report';
 
 //component
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
@@ -51,6 +52,7 @@ export const firebaseConfig = {
     SupportPage,
     SearchPage,
     SettingsPage,
+    ReportPage,
     TestPage ///just to test out functionalities
   ],
   imports: [
@@ -72,6 +74,7 @@ export const firebaseConfig = {
     SupportPage,
     SearchPage,
     SettingsPage,
+    ReportPage,
     TestPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},

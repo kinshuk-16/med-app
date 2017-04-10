@@ -39,60 +39,72 @@ export class RewardPage {
   		name: "Music",
   		subCats:[{
   			name: "Jazz",
-  			pic: "assets/img/jazz.png"
+  			pic: "assets/img/jazz.png",
+        src: "https://www.youtube.com/embed/clC6cgoh1sU"
   		},
   		{
   			name: "Ambient",
-  			pic: "assets/img/ambient.png"
+  			pic: "assets/img/ambient.png",
+        src: "https://www.youtube.com/embed/QhZnEagfjTQ"
   		},
   		{
   			name: "New",
-  			pic: "assets/img/new.png"
+  			pic: "assets/img/new.png",
+        src: "https://www.youtube.com/embed/5xtm0iRTWEE"
   		}]
   	});
   	this.catagories.push({
   		name: "Comic Strips",
   		subCats:[{
-  			name: "  XKCD  ",
-  			pic: "assets/img/xkcd.png"
+  			name: "XKCD",
+  			pic: "assets/img/xkcd.png",
+        src: "assets/img/xkcdShow.png"
   		},
   		{
   			name: "Dilbert",
-  			pic: "assets/img/dilbert.png"
+  			pic: "assets/img/dilbert.png",
+        src: "assets/img/db.gif"
   		},
   		{
   			name: "Garfield",
-  			pic: "assets/img/garfield.png"
+  			pic: "assets/img/garfield.png",
+        src: "assets/img/gf.gif"
   		}]
   	});
   	this.catagories.push({
   		name: "Animal Pictures",
   		subCats:[{
   			name: "Cats",
-  			pic: "assets/img/cats.png"
+  			pic: "assets/img/cats.png",
+        src: "assets/img/catShow.jpg"
   		},
   		{
   			name: "Dogs",
-  			pic: "assets/img/dogs.png"
+  			pic: "assets/img/dogs.png",
+        src: "assets/img/dogShow.jpg"
   		},
   		{
   			name: "Wild",
-  			pic: "assets/img/wild.png"
+  			pic: "assets/img/wild.png",
+        src: "assets/img/wildShow.jpg"
   		}]
   	});
   	this.catagories.push({
   		name: "Vacation",
   		subCats:[{
   			name: "Urban",
-  			pic: "assets/img/urban.png"
+  			pic: "assets/img/urban.png",
+        src: "assets/img/urbanShow.jpg"
   		},
   		{
   			name: "Beach",
-  			pic: "assets/img/beach.png"
+  			pic: "assets/img/beach.png",
+        src: "assets/img/beachShow.jpg"
   		},
   		{
   			name: "wilderness",
-  			pic: "assets/img/wilderness.png"
+  			pic: "assets/img/wilderness.png",
+        src: "assets/img/wildernessShow.jpg"
   		}]
   	});
   }
@@ -102,7 +114,8 @@ export class RewardPage {
   	this.af.database.object("rewards/"+ uniqueId).set({
   		name: catagory.name,
   		uid: this.userId,
-  		pic: catagory.pic
+  		pic: catagory.pic,
+      src: catagory.src
   	});
   }
 

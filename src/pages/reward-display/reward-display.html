@@ -12,5 +12,15 @@
 
 
 <ion-content padding>
+	<img *ngIf="pic" [src]="reward.src"> 
 
+	<div *ngIf="music" style="position:relative;height:0;padding-bottom:56.25%">
+		<iframe [src]="reward.src" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe>
+	</div>
+	<div *ngIf="message">
+		{{reward.message}}
+	</div>
+	<div *ngIf="noShow">
+		Looks like you don't have any reward/ support group for this medication. You can change the settings for the medication by going to mediccine cabinet and selecting the medicine.
+	</div>
 </ion-content>

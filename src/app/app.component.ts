@@ -9,6 +9,7 @@ import { LoginPage } from '../pages/login/login';
 import { AuthData } from '../providers/auth-data';
 import { RewardPage } from '../pages/reward/reward';
 import { SupportPage } from '../pages/support/support';
+import { RewardDisplayPage } from '../pages/reward-display/reward-display';
 
 import firebase from 'firebase';
 
@@ -61,7 +62,7 @@ export class MyApp {
       { title: 'Manage Support Group', component: SupportPage  },
       { title: 'Manage Rewards', component: RewardPage },
       { title: 'Generate Report', component: Page2 }
-      //{ title: 'Test', component: TestPage } // only for development/debugging -- remove later
+      //{ title: 'Test', component: RewardDisplayPage } // only for development/debugging -- remove later
     ];
     this.pagesBottom = [
       //{ title: 'Settings', component: Page2 },

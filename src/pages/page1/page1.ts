@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 
 import { LocalNotifications } from 'ionic-native';
-import { AngularFire , FirebaseListObservable } from 'angularfire2';
+import { AngularFire /*, FirebaseListObservable*/ } from 'angularfire2';
 
 import {Subject} from 'rxjs/Subject';
 import { AddMedPage } from '../add-med/add-med';
@@ -25,9 +25,10 @@ export class Page1 {
    allMeds : any [];
    noMeds: boolean;
    userId: string;
-   queryObservable: FirebaseListObservable<any>;
+   stop: boolean;
   constructor(public navCtrl: NavController,  public navParams: NavParams, public platform: Platform, 
     public alertCtrl: AlertController, public af: AngularFire ) {
+    this.stop = false;
     //binding event of local notification
     LocalNotifications.on("click", (notification) => {
         this.notificationResponse(notification.data);
@@ -41,14 +42,15 @@ export class Page1 {
     //query value for this user
     const subject = new Subject();
 
-    this.queryObservable = af.database.list('/meds', {
+    const queryObservable = af.database.list('/meds', {
       query: {
         orderByChild: 'user',
         equalTo: subject
       }
     });
     //this.allMeds =[];
-    this.queryObservable.subscribe(queriedItems => {
+    queryObservable.subscribe(queriedItems => {
+      if(!this.stop){
         this.allMeds = [];
         queriedItems.forEach(medObj => {
           this.allMeds.push(medObj);
@@ -61,6 +63,7 @@ export class Page1 {
           this.noMeds = false;
         }
         this.scheduleNotification();
+      } 
       });
 
     
@@ -121,6 +124,7 @@ export class Page1 {
     for(let med of this.meds){
         med.color = this.getMedStatus(med);
     }
+    console.log(this.meds);
   }
 
   public scheduleNotification(){
@@ -135,7 +139,7 @@ export class Page1 {
           for(let not of notificationObj){
             if(not.at.getHours() == medT.getHours() && not.at.getMinutes() == medT.getMinutes()){
               not.text += ", " + med.name;
-              not.data += " " + med.name+ "-"+ med.time; 
+              not.data += "**" + med.id 
               flag = true;
             }
         }
@@ -152,13 +156,13 @@ export class Page1 {
           else{
             sound = "file://audio/"+med.sound+".wav"
           }
-          console.log(sound); 
+          //console.log(sound); 
           notificationObj.push({
             title: "Hearth",
             at: medT,
             text: "Time for "+ med.name,
             sound: sound,
-            data: med.name+ "-"+ med.time
+            data: med.id
           });
         }
         flag = false;
@@ -181,8 +185,20 @@ export class Page1 {
       //console.log(taken);
   }
 
-  sendMessage(){
-    var queryObservable = this.af.database.list('/support', {
+  sendMessage(ids){
+    var send = true;
+    for(let id of ids){
+      for(let med of this.meds){
+        if(med.id == id){
+          if(med.support ==false){
+            send = false;
+          }
+        }
+      }
+    }
+    //alert(send);
+    if(send){
+      var queryObservable = this.af.database.list('/support', {
       query: {
         orderByChild: 'uid',
         equalTo: this.userId
@@ -203,16 +219,18 @@ export class Page1 {
           if(window.SMS) window.SMS.sendSMS(num,message,()=>{;},(error)=>{;});
         }
        });
-
+    }
   }
 
   notificationResponse(notifData){
-      var medInfo=notifData.split(" ");
+      var medIds=notifData.split("**");
       var allMeds = "";
-      var medData = [];
-      for(let m of medInfo){
-        medData.push(m.split("-"));
-        allMeds += " "+ m.split("-")[0];
+      for(let mId of medIds){
+        for(let m of this.meds){
+          if(m.id == mId){
+            allMeds += " "+ m.name;
+          }
+        }  
       }
       let alert = this.alertCtrl.create({
               title: "Hearth",
@@ -221,27 +239,27 @@ export class Page1 {
                 {
                     text: 'No',
                     handler: () =>{
-                      this.sendMessage();
+                      this.sendMessage(medIds);
                     }
                 },
                 {
                     text: 'Yes! Unlock my reward!',
                     handler: () => {
-                        for(let item of medData){
-                          for(let med of this.meds){
-                            if(item[0] == med.name && item[1] == med.time){
-                              med.taken = true;
-                              med.color = this.getMedStatus(med);
-                              //update db 
-                              this.updateTakenDb(med);
-                              this.navCtrl.push(RewardDisplayPage,{
-                                medicine: med
-                              });
-
-                            }
+                        this.stop = true
+                        var medicines = [];
+                        for(let mId of medIds){
+                            for(let m of this.meds){
+                              if(m.id == mId){
+                                m.taken = true;
+                                m.color = this.getMedStatus(m);
+                                this.updateTakenDb(m);
+                                medicines.push(m)
+                              }
+                            }  
                           }
-                        }
-                        // unloackReward();
+                        this.navCtrl.push(RewardDisplayPage,{
+                                 medicine: medicines
+                               });
                     }
                 }
             ]

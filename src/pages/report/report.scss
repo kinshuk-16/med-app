@@ -1,4 +1,8 @@
 page-report {
+	.button-md-secondary{
+		background-color: #2e7d32;
+	}
+	
 	ul {list-style-type: none;}
 	//body {font-family: Verdana, sans-serif;}
 	.scroll-content{
@@ -11,7 +15,7 @@ page-report {
 	.month {
 	    padding: 10px 25px;
 	    width: 100%;
-	    background: #1abc9c;
+	    background: #2e7d32;
 	}
 
 	/* Month list */
@@ -62,7 +66,7 @@ page-report {
 	/* Highlight the "current" day */
 	.days li .active {
 	    padding: 5px;
-	    background: #1abc9c;
+	    background: #2e7d32;
 	    color: white !important
 	}
 }

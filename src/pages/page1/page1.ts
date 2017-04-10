@@ -91,8 +91,9 @@ export class Page1 {
 
       for(let i=0 ; i<m.medtime.length; i++){
         var took = false;
+        var today = new Date();
         for(let prop in m.taken){
-          var today = new Date(m.taken[prop].date);
+          //var today = new Date(m.taken[prop].date);
           if(m.taken[prop].date == today.toDateString()){
             if(m.taken[prop].time == m.medtime[i].time){
               took = true;
@@ -299,7 +300,11 @@ export class Page1 {
      this.meds[index].taken = true;
      this.meds[index].color = this.getMedStatus(med);
      this.updateTakenDb(med);
-     this.navCtrl.push(RewardDisplayPage);
+     var medicines = [];
+     medicines.push(med);
+     this.navCtrl.push(RewardDisplayPage,{
+                                 medicine: medicines
+                               });
   }
 
   snooze(med){

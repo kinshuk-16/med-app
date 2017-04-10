@@ -18,8 +18,11 @@ export class ReportPage {
 	meds: any [];
 	selectedMed: string;
 	calendar : any [];
+	detail: boolean;
+	detailMessage: string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public af: AngularFire ) {
   	this.calShow = false;
+  	this.detail = true;
   	var userId = firebase.auth().currentUser.uid;
   	var queryObservable = af.database.list('/meds', {
       query: {
@@ -87,6 +90,45 @@ export class ReportPage {
   			
   		}
   	}
+  }
+
+  showDetail(day){
+  	if(day.taken == "active"){
+  		this.detail = true;
+	  	//var times = []
+	  	var cnt = 0;
+	  	for(let med of this.meds){
+	  		if(med.id == this.selectedMed){
+	  			//var flag = false;
+	  			for(let t in med.taken){
+	  				var takenD = new Date(med.taken[t].date);
+	  				if(takenD.getDate() == day.date){
+	  					// console.log("here");
+	  					// var flag = true; // data not entered
+	  					// for(let time of times){
+	  					// 	if(time.medTime == med.taken[t].time){
+	  					// 		time.cnt += 1;
+	  					// 		flag = true; // data entered
+	  					// 	}
+	  					// }
+	  					// if(flag){// data still not entered
+	  					// 	times.push({
+			  			// 			medTime: med.taken[t].time,
+			  			// 			cnt: 1
+			  			// 		});
+	  					// }
+	  					cnt += 1;
+
+	  				}
+	  			}
+	  			this.detailMessage = "You took "+med.name+" "+ cnt+ " times on this day";
+	  		}
+	  	}
+     }
+
+//  	console.log(times);
+  	console.log(this.detailMessage);
+
   }
 
 }

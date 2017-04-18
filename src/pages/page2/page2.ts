@@ -4,6 +4,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { AddMedPage } from '../add-med/add-med';
 import { SettingsPage } from '../settings/settings';
+import { StatsPage } from '../stats/stats';
 import firebase from 'firebase';
 
 @Component({
@@ -91,6 +92,16 @@ export class Page2 {
             });
           }
         },
+        {
+          text: 'Stats',
+          icon: !this.platform.is('ios') ? 'information-circle' : null,
+          handler: () => {
+            console.log('Stats clicked');
+            this.navCtrl.push(StatsPage,{
+              medicine: med
+            });
+          }
+        }
       ]
     });
     actionSheet.present();

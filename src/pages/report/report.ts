@@ -127,6 +127,7 @@ export class ReportPage {
      }
 
 //  	console.log(times);
+    this.detailMessage +="\n \n **According to your medication history, it looks like you tend to miss most medication on weekends.**" // tentative
   	console.log(this.detailMessage);
 
   }

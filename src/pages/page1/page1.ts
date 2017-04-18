@@ -31,7 +31,11 @@ export class Page1 {
     this.stop = false;
     //binding event of local notification
     LocalNotifications.on("click", (notification) => {
+        //this.stop = true;
+        //observable.unsubscribe();
         this.notificationResponse(notification.data);
+        //this.stop = false;
+
     });
 
     //define today
@@ -49,7 +53,7 @@ export class Page1 {
       }
     });
     //this.allMeds =[];
-    queryObservable.subscribe(queriedItems => {
+    var observable = queryObservable.subscribe(queriedItems => {
       if(!this.stop){
         this.allMeds = [];
         queriedItems.forEach(medObj => {
@@ -65,7 +69,7 @@ export class Page1 {
         this.scheduleNotification();
       } 
       });
-
+      //observable.unsubscribe();
     
     this.userId = firebase.auth().currentUser.uid;
     subject.next(this.userId);
@@ -136,7 +140,7 @@ export class Page1 {
         var medT = new Date();
         medT.setHours(parseInt(med.time.split(":")[0]));
         medT.setMinutes(parseInt(med.time.split(":")[1]));
-        //if(new Date()< medT){
+        //if(new Date()< medT){ // uncomment when testing done. Used to limit notification only to the ones left in the day
           for(let not of notificationObj){
             if(not.at.getHours() == medT.getHours() && not.at.getMinutes() == medT.getMinutes()){
               not.text += ", " + med.name;
@@ -168,8 +172,8 @@ export class Page1 {
         }
         flag = false;
       }
-    //} // uncomment when testing done. Used to limit notification only to the ones eft in the day
-    //console.log(notificationObj);
+    //} // uncomment when testing done. Used to limit notification only to the ones left in the day
+    console.log(notificationObj);
     LocalNotifications.schedule(notificationObj);
     // does not create notification for ibuprofen in the middle
   }
@@ -246,7 +250,7 @@ export class Page1 {
                 {
                     text: 'Yes! Unlock my reward!',
                     handler: () => {
-                        this.stop = true
+                        this.stop = true;
                         var medicines = [];
                         for(let mId of medIds){
                             for(let m of this.meds){

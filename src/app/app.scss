@@ -27,13 +27,15 @@
 	    margin-top: 20px;
 	}
 	.menu-color{
-		background-color: #43a047;
-		color:#fff;
+		//background-color: #43a047;
+		background-color: #5ccaef;
+		color:#000;
 	}
 
 	//overriding internal class -- **pay attention**
 	.toolbar-md .toolbar-background-md, .toolbar-ios .toolbar-background-ios, .toolbar-wp .toolbar-background-wp  {
-    	background: #2e7d32;
+    	//background: #2e7d32;
+    	background: #2caae2;
 	}
 
 	.nav-bar{

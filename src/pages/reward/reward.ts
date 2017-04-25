@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import firebase from 'firebase';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
@@ -18,7 +18,7 @@ export class RewardPage {
   favCats: FirebaseListObservable<any>;;
   userId: string;
   rewards: FirebaseListObservable<any>;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public af: AngularFire) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public af: AngularFire, public alertCtrl: AlertController) {
 
   	this.userId = firebase.auth().currentUser.uid;
   	
@@ -127,6 +127,17 @@ export class RewardPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RewardPage');
+  }
+
+  info(){
+    console.log("info cicked");
+    let confirm = this.alertCtrl.create({
+      title: 'About Reward Page',
+      subTitle: `Add reward catagory to your favourite by tapping on them. You would get a reward from one of your favourite catagories (chosen randomly) 
+      on taking a medicine.`,
+      buttons: ['OK']
+    });
+    confirm.present();
   }
 
 }

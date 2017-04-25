@@ -9,7 +9,12 @@
     <button ion-button menuToggle>
       <div class="nav-bar"><ion-icon name="menu"></ion-icon></div>
     </button>
-    <ion-title><div class="nav-bar">Manage Support Group</div></ion-title>
+	<ion-title><div class="nav-bar">Support Group</div> </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only  (click)="info()">
+        <ion-icon name="information-circle" class="info"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

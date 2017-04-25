@@ -91,6 +91,18 @@ export class SupportPage {
     actionSheet.present();
   }
 
+  info(){
+    console.log("info cicked");
+    let confirm = this.alertCtrl.create({
+      title: 'About Support page',
+      subTitle: `This page displays the contact in your support group. You can add new contact (from your phonebook) by clicking the plus button at the bottom of the page.
+      Make a contact your favourite by clicking on the contact name and selecting "Add favourite". Favourite contact will get SMS if you miss your medication.
+      Other contacts would only be able to send you encouraging messages. `,
+      buttons: ['OK']
+    });
+    confirm.present();
+  }
+
 }
 
 
@@ -107,6 +119,11 @@ export class SupportPage {
       </div>
     </ion-title>
     <ion-buttons start>
+      <button ion-button icon-only  (click)="info()">
+      <div class="nav-bar">
+        <ion-icon name="information-circle"></ion-icon>
+      </div>
+      </button>
       <button ion-button (click)="dismiss()">
         <div class="nav-bar">
           <span ion-text color="primary" showWhen="ios">Cancel</span>
@@ -194,6 +211,17 @@ export class SearchPage {
 
  dismiss() {
     this.viewCtrl.dismiss();
+  }
+
+  info(){
+    console.log("info cicked");
+    let confirm = this.alertCtrl.create({
+      title: 'Add Support Contact',
+      subTitle: `You can add friends and family from your contact into your support group by searching them by name in the search bar below. 
+      Tap the + icon to add contact. The select contact will get a message from the app asking them to send encouranging message to you.`,
+      buttons: ['OK']
+    });
+    confirm.present();
   }
 
 }

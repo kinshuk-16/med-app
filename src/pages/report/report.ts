@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import firebase from 'firebase';
 import { AngularFire /*, FirebaseListObservable*/ } from 'angularfire2';
 /*
@@ -20,7 +20,7 @@ export class ReportPage {
 	calendar : any [];
 	detail: boolean;
 	detailMessage: string;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public af: AngularFire ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public af: AngularFire, public alertCtrl: AlertController ) {
   	this.calShow = false;
   	this.detail = true;
   	var userId = firebase.auth().currentUser.uid;
@@ -130,6 +130,17 @@ export class ReportPage {
     this.detailMessage +="\n \n **According to your medication history, it looks like you tend to miss most medication on weekends.**" // tentative
   	console.log(this.detailMessage);
 
+  }
+
+  info(){
+    console.log("info cicked");
+    let confirm = this.alertCtrl.create({
+      title: 'About Report Page',
+      subTitle: `Select a medicine from the drop down and click on "Show Report" to view the days you have taken this medicine.
+      To view more details and analysis, click on a highlighted date.`,
+      buttons: ['OK']
+    });
+    confirm.present();
   }
 
 }

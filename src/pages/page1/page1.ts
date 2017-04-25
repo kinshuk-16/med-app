@@ -274,14 +274,16 @@ export class Page1 {
 
   getMedStatus(med){
     if(med.taken){
-      return "#66bb6a"; //green
+      //return "#66bb6a"; //green
+      return "rgba(102, 187, 106, 0.78)";
     }
     else{
       var medTime = parseInt(med.time.split(":")[0])*60 +parseInt(med.time.split(":")[1]);
       var d = new Date();
       var nowTime = d.getHours() * 60 + d.getMinutes();
       if (nowTime > medTime){
-        return "#ef5350"; //red
+        //return "#ef5350"; //red
+        return "rgba(249, 121, 121, 0.78)"; 
       }
       else{
         return "white";

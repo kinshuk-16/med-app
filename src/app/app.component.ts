@@ -59,7 +59,7 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.today = { title: 'Today: '+today, component: Page1 };
     this.pagesTop = [
-      { title: 'Medicine cabinet', component: Page2 },
+      { title: 'Medicine Cabinet', component: Page2 },
       { title: 'Manage Support Group', component: SupportPage  },
       { title: 'Manage Rewards', component: RewardPage },
       { title: 'Generate Report', component: ReportPage }

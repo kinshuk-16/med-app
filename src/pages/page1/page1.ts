@@ -163,7 +163,7 @@ export class Page1 {
           }
           //console.log(sound); 
           notificationObj.push({
-            title: "Hearth",
+            title: "Pillpal",
             at: medT,
             text: "Time for "+ med.name,
             sound: sound,
@@ -238,7 +238,7 @@ export class Page1 {
         }  
       }
       let alert = this.alertCtrl.create({
-              title: "Hearth",
+              title: "Pillpal",
               message: "Did you take your"+ allMeds +" today?" ,
               buttons: [
                 {

@@ -44,7 +44,7 @@ export class ReportPage {
   	for(let med of this.meds){
   		if(med.id == this.selectedMed){
   			var medStart = new Date(med.startDay);
-  			var medLast = new Date(med.lastDay);
+  			//var medLast = new Date(med.lastDay);
   			// only check for  april--- need to add logic for may
   			var dates = [];
   			var datesTaken =[];
@@ -53,37 +53,38 @@ export class ReportPage {
   				var takenD = new Date(med.taken[t].date);
   				datesTaken.push(takenD.getDate());
   			}
-
-  			dates.push({
-  					date:"",
-  					taken:""// blank means not taken active means taken
-  				});
-  			dates.push({
-  					date:"",
-  					taken:""
-  				});
-  			dates.push({
-  					date:"",
-  					taken: ""
-  				});
-  			dates.push({
-  					date:"",
-  					taken:""
-  				});
-  			dates.push({
-  					date:"",
-  					taken:""
-  				});
-  			for(let i =1; i<=30;i++){
+        //console.log(datesTaken);
+  			// dates.push({
+  			// 		date:"",
+  			// 		taken:""// blank means not taken active means taken
+  			// 	});
+  			// dates.push({
+  			// 		date:"",
+  			// 		taken:""
+  			// 	});
+  			// dates.push({
+  			// 		date:"",
+  			// 		taken: ""
+  			// 	});
+  			// dates.push({
+  			// 		date:"",
+  			// 		taken:""
+  			// 	});
+  			// dates.push({
+  			// 		date:"",
+  			// 		taken:""
+  			// 	});
+  			for(let i =1; i<=31;i++){
   				dates.push({
   					date:i,
   					taken:(datesTaken.indexOf(i) == -1)? "": "active"
   				});
   			}
+        //console.log(dates);
   			this.calendar =[];
-  			if(medStart.getMonth() == 3){
+  			if(medStart.getMonth() == 4){ // changed from 3 to 4 for May
   				this.calendar.push({
-  					month: "April",
+  					month: "May", //changed to MAy from April
   					dates: dates,
   				});
   			}
